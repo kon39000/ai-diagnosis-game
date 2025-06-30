@@ -1,0 +1,36 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simple Robot Icon -->
+  
+  <!-- Body -->
+  <rect x="20" y="35" width="40" height="35" rx="8" fill="#E1F5FE" stroke="#0277BD" stroke-width="2"/>
+  
+  <!-- Head -->
+  <rect x="25" y="15" width="30" height="25" rx="12" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2"/>
+  
+  <!-- Eyes -->
+  <rect x="30" y="22" width="6" height="6" rx="1" fill="#0277BD"/>
+  <rect x="44" y="22" width="6" height="6" rx="1" fill="#0277BD"/>
+  <rect x="32" y="24" width="2" height="2" fill="#FFFFFF"/>
+  <rect x="46" y="24" width="2" height="2" fill="#FFFFFF"/>
+  
+  <!-- Mouth -->
+  <rect x="36" y="30" width="8" height="3" rx="1" fill="#7B1FA2"/>
+  
+  <!-- Antenna -->
+  <line x1="40" y1="15" x2="40" y2="8" stroke="#7B1FA2" stroke-width="2"/>
+  <circle cx="40" cy="6" r="2" fill="#FF5722"/>
+  
+  <!-- Control Panel -->
+  <rect x="30" y="45" width="20" height="15" rx="3" fill="#FFFFFF" stroke="#0277BD" stroke-width="1"/>
+  <circle cx="35" cy="50" r="1.5" fill="#4CAF50"/>
+  <circle cx="40" cy="50" r="1.5" fill="#FFC107"/>
+  <circle cx="45" cy="50" r="1.5" fill="#F44336"/>
+  
+  <!-- Screen -->
+  <rect x="32" y="53" width="16" height="5" rx="1" fill="#000000"/>
+  <rect x="33" y="54" width="2" height="3" fill="#00FF00"/>
+  <rect x="36" y="54" width="2" height="3" fill="#00FF00"/>
+  <rect x="39" y="54" width="2" height="3" fill="#00FF00"/>
+  <rect x="42" y="54" width="2" height="3" fill="#00FF00"/>
+  <rect x="45" y="54" width="2" height="3" fill="#00FF00"/>
+</svg>

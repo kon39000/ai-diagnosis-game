@@ -1,0 +1,67 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Computer Work Illustration -->
+  
+  <!-- Person -->
+  <!-- Head -->
+  <circle cx="60" cy="25" r="12" fill="#FFDBCB" stroke="#D4A574" stroke-width="1"/>
+  
+  <!-- Hair -->
+  <path d="M 48 20 Q 60 10 72 20 Q 70 15 60 15 Q 50 15 48 20" fill="#8D6E63"/>
+  
+  <!-- Eyes -->
+  <circle cx="56" cy="23" r="1.5" fill="#333"/>
+  <circle cx="64" cy="23" r="1.5" fill="#333"/>
+  
+  <!-- Mouth -->
+  <path d="M 58 28 Q 60 30 62 28" stroke="#333" stroke-width="1" fill="none"/>
+  
+  <!-- Body -->
+  <rect x="50" y="37" width="20" height="30" rx="5" fill="#2196F3"/>
+  
+  <!-- Arms -->
+  <rect x="42" y="42" width="6" height="20" rx="3" fill="#FFDBCB"/>
+  <rect x="72" y="42" width="6" height="20" rx="3" fill="#FFDBCB"/>
+  
+  <!-- Hands on keyboard -->
+  <circle cx="45" cy="65" r="3" fill="#FFDBCB"/>
+  <circle cx="75" cy="65" r="3" fill="#FFDBCB"/>
+  
+  <!-- Computer Monitor -->
+  <rect x="25" y="70" width="70" height="40" rx="3" fill="#333"/>
+  <rect x="30" y="75" width="60" height="30" rx="2" fill="#4A90E2"/>
+  
+  <!-- Screen content (code) -->
+  <rect x="33" y="78" width="54" height="2" fill="#00FF00"/>
+  <rect x="33" y="82" width="40" height="2" fill="#00FF00"/>
+  <rect x="33" y="86" width="48" height="2" fill="#00FF00"/>
+  <rect x="33" y="90" width="35" height="2" fill="#00FF00"/>
+  <rect x="33" y="94" width="50" height="2" fill="#00FF00"/>
+  <rect x="33" y="98" width="25" height="2" fill="#00FF00"/>
+  
+  <!-- Monitor stand -->
+  <rect x="56" y="110" width="8" height="8" fill="#666"/>
+  <rect x="45" y="118" width="30" height="3" rx="1" fill="#666"/>
+  
+  <!-- Keyboard -->
+  <rect x="35" y="115" width="50" height="8" rx="2" fill="#E0E0E0" stroke="#BDBDBD" stroke-width="1"/>
+  
+  <!-- Keyboard keys -->
+  <rect x="38" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="42" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="46" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="50" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="54" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="58" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="62" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="66" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="70" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="74" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="78" y="117" width="3" height="2" rx="0.5" fill="#FFF"/>
+  
+  <rect x="40" y="120" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="44" y="120" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="48" y="120" width="15" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="64" y="120" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="68" y="120" width="3" height="2" rx="0.5" fill="#FFF"/>
+  <rect x="72" y="120" width="3" height="2" rx="0.5" fill="#FFF"/>
+</svg>

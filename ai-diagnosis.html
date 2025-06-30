@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>あなたの仕事、AI化診断</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .question-container {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .custom-input-container {
+            margin-top: 10px;
+        }
+
+        .character-image {
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .small-character {
+            width: 80px;
+            height: 80px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .result-character {
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 0.9rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 20px 0;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-message {
+            font-size: 1.3rem;
+            margin: 20px 0;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .share-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .cta-section {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .cta-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .result-score {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- スタート画面 -->
+        <div id="start-screen" class="card">
+            <img src="images/ai-character.svg" alt="AI診断キャラクター" class="character-image">
+            <h1>🤖 あなたの仕事、AI化診断</h1>
+            <p class="subtitle">
+                10個の質問に答えて、あなたの仕事がAIに置き換えられる可能性を診断します。<br>
+                結果をSNSでシェアして、友達と比較してみましょう！
+            </p>
+            <button class="btn" onclick="startDiagnosis()">診断スタート</button>
+        </div>
+
+        <!-- 診断画面 -->
+        <div id="diagnosis-screen" class="card hidden">
+            <img src="images/robot.svg" alt="診断ロボット" class="small-character">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            <div class="question-container">
+                <div class="question" id="question-text"></div>
+                <div class="options" id="options-container"></div>
+            </div>
+            <div class="button-group">
+                <button class="btn-secondary" id="back-btn" onclick="previousQuestion()" style="display: none;">戻る</button>
+                <button class="btn" id="next-btn" onclick="nextQuestion()" disabled>次へ</button>
+            </div>
+        </div>
+
+        <!-- 結果画面 -->
+        <div id="result-screen" class="card hidden">
+            <h1>診断結果</h1>
+            <img src="images/ai-character.svg" alt="結果キャラクター" class="result-character" id="result-character">
+            <div class="result-score" id="ai-score">0%</div>
+            <div class="result-message" id="result-message"></div>
+            
+            <div class="share-section">
+                <button class="btn" onclick="shareResult()">結果をXでシェア</button>
+                <button class="btn" onclick="restartDiagnosis()">もう一度診断</button>
+            </div>
+
+            <div class="cta-section">
+                <h3>AIについてもっと知りたい方へ</h3>
+                <p>実践的なAI活用術や最新情報をnoteで発信中！</p>
+                <a href="https://note.com/kon39000" target="_blank" class="cta-link">noteをチェック →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 診断データ
+        const questions = [
+            {
+                question: "あなたの職種は？",
+                options: [
+                    { text: "事務職・データ入力", score: 20 },
+                    { text: "営業・接客", score: 10 },
+                    { text: "クリエイティブ職", score: 5 },
+                    { text: "技術職・エンジニア", score: 15 },
+                    { text: "管理職・経営", score: 3 },
+                    { text: "その他", score: 10, hasInput: true }
+                ]
+            },
+            {
+                question: "主な作業内容は？",
+                options: [
+                    { text: "データ入力・処理がメイン", score: 25 },
+                    { text: "人との対話・コミュニケーション", score: 8 },
+                    { text: "創作活動・企画立案", score: 5 },
+                    { text: "分析・計算業務", score: 18 },
+                    { text: "物理的な作業", score: 2 },
+                    { text: "その他", score: 12, hasInput: true }
+                ]
+            },
+            {
+                question: "創造性が求められる度合いは？",
+                options: [
+                    { text: "ルーティンワークが中心", score: 20 },
+                    { text: "時々創造的な判断が必要", score: 12 },
+                    { text: "かなり創造的", score: 6 },
+                    { text: "完全にオリジナルな発想が必要", score: 2 }
+                ]
+            },
+            {
+                question: "対人スキルの重要度は？",
+                options: [
+                    { text: "人との関わりはほとんどない", score: 15 },
+                    { text: "あまり重要ではない", score: 12 },
+                    { text: "重要", score: 8 },
+                    { text: "極めて重要", score: 3 }
+                ]
+            },
+            {
+                question: "専門知識の必要性は？",
+                options: [
+                    { text: "誰でもできる簡単な作業", score: 25 },
+                    { text: "少し勉強すれば覚えられる", score: 15 },
+                    { text: "かなりの専門知識が必要", score: 8 },
+                    { text: "高度な専門性が必要", score: 3 }
+                ]
+            },
+            {
+                question: "物理的な作業の割合は？",
+                options: [
+                    { text: "完全にデスクワーク", score: 20 },
+                    { text: "一部物理的作業あり", score: 12 },
+                    { text: "半々くらい", score: 8 },
+                    { text: "主に物理的作業", score: 2 },
+                    { text: "その他", score: 12, hasInput: true }
+                ]
+            },
+            {
+                question: "判断の複雑さは？",
+                options: [
+                    { text: "単純な判断のみ", score: 20 },
+                    { text: "やや複雑", score: 15 },
+                    { text: "かなり複雑", score: 8 },
+                    { text: "極めて複雑で経験が必要", score: 3 }
+                ]
+            },
+            {
+                question: "責任の重さは？",
+                options: [
+                    { text: "軽い責任", score: 15 },
+                    { text: "普通", score: 10 },
+                    { text: "重い責任", score: 6 },
+                    { text: "極めて重い責任", score: 2 }
+                ]
+            },
+            {
+                question: "新しいことを学ぶ頻度は？",
+                options: [
+                    { text: "一度覚えれば十分", score: 18 },
+                    { text: "年に数回", score: 12 },
+                    { text: "月に数回", score: 8 },
+                    { text: "毎日新しいことを学ぶ", score: 3 }
+                ]
+            },
+            {
+                question: "AI利用経験は？",
+                options: [
+                    { text: "全く使ったことがない", score: 5 },
+                    { text: "聞いたことがある程度", score: 3 },
+                    { text: "時々使っている", score: -2 },
+                    { text: "頻繁に使っている", score: -5 }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let totalScore = 0;
+        let selectedAnswers = [];
+        let customInputs = {}; // カスタム入力を保存
+
+        // AI判定用のキーワード辞書
+        const aiAnalysis = {
+            // 高リスク（AIに置換されやすい）キーワード
+            highRisk: {
+                keywords: ['データ', '入力', '計算', '集計', '分析', 'エクセル', '事務', '単純', 'ルーチン', '繰り返し', '定型', '転記', '照合', '確認'],
+                score: 20
+            },
+            // 中リスク キーワード
+            mediumRisk: {
+                keywords: ['資料作成', '報告書', '翻訳', '文書', '調査', '検索', 'パソコン', 'PC', 'システム', '処理'],
+                score: 15
+            },
+            // 低リスク（AIに置換されにくい）キーワード
+            lowRisk: {
+                keywords: ['接客', '営業', '相談', 'コミュニケーション', '創作', 'デザイン', '企画', '戦略', '判断', '経営', '管理', '指導', '教育', '医療', '介護', '建設', '修理', '芸術', '料理'],
+                score: 5
+            },
+            // 技術系（AIとの共存）キーワード
+            techSavvy: {
+                keywords: ['プログラム', 'エンジニア', 'AI', '機械学習', 'システム開発', 'ウェブ', 'アプリ', 'データサイエンス'],
+                score: 8
+            }
+        };
+
+        function analyzeCustomInput(text) {
+            if (!text || text.trim() === '') {
+                return 12; // デフォルトスコア
+            }
+            
+            const lowerText = text.toLowerCase();
+            let score = 12; // デフォルト
+            
+            // 各カテゴリーのキーワードをチェック
+            for (const [category, data] of Object.entries(aiAnalysis)) {
+                for (const keyword of data.keywords) {
+                    if (lowerText.includes(keyword) || text.includes(keyword)) {
+                        score = data.score;
+                        break;
+                    }
+                }
+                if (score !== 12) break; // マッチしたら終了
+            }
+            
+            return score;
+        }
+
+        function startDiagnosis() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('diagnosis-screen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question-text').textContent = `Q${currentQuestion + 1}. ${question.question}`;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option.text;
+                optionDiv.onclick = () => selectOption(index, optionDiv, option.hasInput);
+                
+                if (option.hasInput) {
+                    const inputContainer = document.createElement('div');
+                    inputContainer.className = 'custom-input-container hidden';
+                    inputContainer.id = `input-container-${index}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'custom-input';
+                    input.placeholder = '具体的に教えてください';
+                    input.id = `custom-input-${index}`;
+                    
+                    inputContainer.appendChild(input);
+                    optionDiv.appendChild(inputContainer);
+                }
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            // プログレスバー更新
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+
+            // 戻るボタンの表示制御
+            const backBtn = document.getElementById('back-btn');
+            if (currentQuestion > 0) {
+                backBtn.style.display = 'inline-block';
+            } else {
+                backBtn.style.display = 'none';
+            }
+
+            // 次へボタンを無効化
+            document.getElementById('next-btn').disabled = true;
+
+            // 前回の回答を復元
+            if (selectedAnswers[currentQuestion] !== undefined) {
+                const selectedIndex = selectedAnswers[currentQuestion];
+                const options = optionsContainer.children;
+                if (options[selectedIndex]) {
+                    const option = questions[currentQuestion].options[selectedIndex];
+                    selectOption(selectedIndex, options[selectedIndex], option.hasInput);
+                    
+                    // カスタム入力の復元
+                    if (option.hasInput && customInputs[currentQuestion]) {
+                        const input = document.querySelector(`#custom-input-${selectedIndex}`);
+                        if (input) {
+                            input.value = customInputs[currentQuestion];
+                        }
+                    }
+                }
+            }
+        }
+
+        function selectOption(index, element, hasInput = false) {
+            // 他の選択肢の選択を解除
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+                // 入力フィールドも非表示に
+                const inputContainer = opt.querySelector('.custom-input-container');
+                if (inputContainer) {
+                    inputContainer.classList.add('hidden');
+                }
+            });
+
+            // 選択した選択肢をハイライト
+            element.classList.add('selected');
+
+            // 入力フィールドがある場合は表示
+            if (hasInput) {
+                const inputContainer = element.querySelector('.custom-input-container');
+                if (inputContainer) {
+                    inputContainer.classList.remove('hidden');
+                    const input = inputContainer.querySelector('.custom-input');
+                    input.focus();
+                }
+            }
+
+            // 選択した答えを保存
+            selectedAnswers[currentQuestion] = index;
+
+            // 次へボタンを有効化
+            document.getElementById('next-btn').disabled = false;
+        }
+
+        function nextQuestion() {
+            // スコアを加算
+            const selectedIndex = selectedAnswers[currentQuestion];
+            const option = questions[currentQuestion].options[selectedIndex];
+            let score = option.score;
+            
+            // 「その他」が選択されていて入力がある場合、入力内容を分析
+            if (option.hasInput) {
+                const inputElement = document.querySelector(`#custom-input-${selectedIndex}`);
+                if (inputElement && inputElement.value.trim() !== '') {
+                    customInputs[currentQuestion] = inputElement.value;
+                    score = analyzeCustomInput(inputElement.value);
+                }
+            }
+            
+            totalScore += score;
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('diagnosis-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            // スコアを0-100%に正規化
+            const maxPossibleScore = 193; // 各質問の最高スコアの合計
+            const minPossibleScore = -5;   // 最低スコア
+            
+            let aiPercentage = Math.round((totalScore / maxPossibleScore) * 100);
+            aiPercentage = Math.max(0, Math.min(100, aiPercentage)); // 0-100%の範囲に収める
+
+            document.getElementById('ai-score').textContent = aiPercentage + '%';
+
+            // 結果に応じたキャラクター表示
+            const resultCharacter = document.getElementById('result-character');
+            if (aiPercentage >= 70) {
+                resultCharacter.src = 'images/computer-work.svg';
+                resultCharacter.alt = '要注意';
+            } else {
+                resultCharacter.src = 'images/ai-character.svg';
+                resultCharacter.alt = '安全';
+            }
+
+            // メッセージ決定
+            let message = '';
+            if (aiPercentage >= 90) {
+                message = '🚨 危険度MAX！あなたの仕事はAIに置き換えられる可能性が非常に高いです。今すぐAIスキルを身につけることをお勧めします。';
+            } else if (aiPercentage >= 70) {
+                message = '⚠️ 要注意レベル！AIとの共存スキルが必要です。早めの対策を検討しましょう。';
+            } else if (aiPercentage >= 50) {
+                message = '😊 安心ゾーン。でもAIを味方につけてさらにスキルアップしましょう！';
+            } else if (aiPercentage >= 30) {
+                message = '✨ 当面安全！AIを使いこなして更に競争力を高めましょう。';
+            } else {
+                message = '🏆 AI時代の勝ち組予備軍！あなたのスキルは貴重です。';
+            }
+
+            document.getElementById('result-message').textContent = message;
+        }
+
+        function shareResult() {
+            const score = document.getElementById('ai-score').textContent;
+            const text = `私の仕事のAI化診断結果は${score}でした！あなたも診断してみませんか？ #AI化診断 #AIコンテンツラボ`;
+            const url = window.location.href;
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+            window.open(twitterUrl, '_blank');
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function restartDiagnosis() {
+            currentQuestion = 0;
+            totalScore = 0;
+            selectedAnswers = [];
+            customInputs = {};
+            
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
